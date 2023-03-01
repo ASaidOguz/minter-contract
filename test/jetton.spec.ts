@@ -15,13 +15,13 @@ import {
   jettonMinterInitData,
 } from "../build/jetton-minter.deploy";
 
-const OWNER_ADDRESS = randomAddress("owner");
+const OWNER_ADDRESS = Address.parse("EQDjUc7m2zSZ_oWh4wvmLf5a3UqOUfSzvBODeY5RXy9EWy7p");
 const PARTICIPANT_ADDRESS_1 = randomAddress("participant_1");
 const PARTICIPANT_ADDRESS_2 = randomAddress("participant_2");
 
 describe("Jetton", () => {
   let minterContract: JettonMinter;
-
+  
   const getJWalletContract = async (
     walletOwnerAddress: Address,
     jettonMasterAddress: Address
@@ -48,7 +48,7 @@ describe("Jetton", () => {
   it("should get minter initialization data correctly", async () => {
     const call = await minterContract.contract.invokeGetMethod("get_jetton_data", []);
     const { totalSupply, address, metadata } = parseJettonDetails(call);
-
+    
     expect(totalSupply).to.be.bignumber.equal(new BN(0));
     expect(address.toFriendly()).to.equal(OWNER_ADDRESS.toFriendly());
     expect(metadata.name).to.equal("MY_JETTON");
@@ -80,12 +80,12 @@ describe("Jetton", () => {
     const { actionList: actionList1 } = await minterContract.contract.sendInternalMessage(
       internalMessage({
         from: OWNER_ADDRESS,
-        body: JettonMinter.mintBody(PARTICIPANT_ADDRESS_1, toNano(0.01)),
+        body: JettonMinter.mintBody(OWNER_ADDRESS, toNano(0.01)),
       })
     );
 
-    const jwallet1 = await getJWalletContract(PARTICIPANT_ADDRESS_1, minterContract.address);
-
+    const jwallet1 = await getJWalletContract(OWNER_ADDRESS, minterContract.address);
+    console.log("Minter contract address:",minterContract.address)
     const { balance: balanceInitial } = parseJettonWalletDetails(
       await jwallet1.contract.invokeGetMethod("get_wallet_data", [])
     );

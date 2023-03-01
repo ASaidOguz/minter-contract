@@ -17,5 +17,6 @@
   "ts-node": {
     "transpileOnly": true,
     "transpiler": "ts-node/transpilers/swc"
-  }
+  },
+  "typeRoots": ["./global.d.ts", "./node_modules/@types"]
 }

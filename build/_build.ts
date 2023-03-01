@@ -20,6 +20,7 @@ async function main() {
 
   // if we have an explicit bin directory, use the executables there (needed for glitch.com)
   if (fs.existsSync("bin")) {
+    
     process.env.PATH = path.join(__dirname, "..", "bin") + path.delimiter + process.env.PATH;
     process.env.FIFTPATH = path.join(__dirname, "..", "bin", "fiftlib");
   }
@@ -27,6 +28,7 @@ async function main() {
   // make sure func compiler is available
   const minSupportFunc = "0.2.0";
   try {
+    
     const funcVersion = child_process
       .execSync("func -V")
       .toString()

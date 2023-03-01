@@ -14,9 +14,10 @@ dotenv.config();
 import fs from "fs";
 import path from "path";
 import glob from "fast-glob";
-import { Address, Cell, CellMessage, CommonMessageInfo, fromNano, InternalMessage, StateInit, toNano } from "ton";
+import { Address, Cell, CellMessage, CommonMessageInfo, fromNano, InternalMessage, StateInit, toNano, WalletV3R1Source } from "ton";
 import { TonClient, WalletContract, WalletV3R2Source, contractAddress, SendMode } from "ton";
 import { mnemonicNew, mnemonicToWalletKey } from "ton-crypto";
+import { WalletV4Contract, WalletV4Source } from "ton-contracts";
 
 async function main() {
   console.log(`=================================================================`);
@@ -52,8 +53,10 @@ async function main() {
   }
 
   // open the wallet and make sure it has enough TON
+ 
   const walletKey = await mnemonicToWalletKey(deployerMnemonic.split(" "));
-  const walletContract = WalletContract.create(client, WalletV3R2Source.create({ publicKey: walletKey.publicKey, workchain }));
+  
+  const walletContract = WalletContract.create(client, WalletV3R2Source.create({ publicKey: walletKey.publicKey, workchain })); 
   console.log(` - Wallet address used to deploy from is: ${walletContract.address.toFriendly()}`);
   const walletBalance = await client.getBalance(walletContract.address);
   if (walletBalance.lt(toNano(0.2))) {

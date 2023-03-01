@@ -1,4 +1,4 @@
-import { Cell, beginCell, Address, WalletContract, beginDict, Slice } from "ton";
+import { Cell, beginCell, Address, WalletContract, beginDict, Slice, toNano } from "ton";
 
 import walletHex from "./jetton-wallet.compiled.json";
 import minterHex from "./jetton-minter.compiled.json";
@@ -15,10 +15,10 @@ const SNAKE_PREFIX = 0x00;
 // - Data is stored on-chain (except for the image data itself)
 // - Owner should usually be the deploying wallet's address.
 const jettonParams = {
-  owner: Address.parse("EQD4gS-Nj2Gjr2FYtg-s3fXUvjzKbzHGZ5_1Xe_V0-GCp0p2"),
-  name: "MyJetton",
+  owner: Address.parse("EQDEs6cUst1Tr7au9mXQHUzLQXVDnOFG_nADg8-7U3p5tJwF"),
+  name: "AEASO",
   symbol: "JET1",
-  image: "https://www.linkpicture.com/q/download_183.png", // Image url
+  image: "https://ipfs.io/ipfs/QmXDe1D1qdhguwx1DHBJQ9d6nZgZNZC2CEX3riuq5myVAA?filename=Conan_the_Barbarian_Vol_1_93.webp", // Image url
   description: "My jetton",
 };
 
@@ -122,7 +122,7 @@ export function jettonMinterInitData(
   metadata: { [s in JettonMetaDataKeys]?: string }
 ): Cell {
   return beginCell()
-    .storeCoins(0)
+    .storeCoins(toNano(100))
     .storeAddress(owner)
     .storeRef(buildTokenMetadataCell(metadata))
     .storeRef(JETTON_WALLET_CODE)
